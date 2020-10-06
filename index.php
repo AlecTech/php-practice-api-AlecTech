@@ -20,11 +20,12 @@ if($dailyAnimeResponse)
 }
 
 ?>
-<form action="#" method="POST">
+<form action="index.php" method="POST">
   <label for="limit">Enter the Amount of Movies to reflect:
-  <input type="number" id="amount" name="limit" value="3"></label>
+  <input type="number" id="amount" name="limit" value="20"></label>
   <label for="fields">Enter the Type of Data needed:
     <select id="film" name="fields">
+      <option value="">All</option>
       <option value="people">People</option>
       <option value="location">Location</option>
       <option value="films">Films</option>
@@ -34,8 +35,13 @@ if($dailyAnimeResponse)
   <input type="submit" value="Show Data!">
 </form>
 <?php
-
-$animeListLimit = file_get_contents('http://ghibliapi.herokuapp.com/films?limit=5');
+if ( isset( $_POST['limit'] ) && isset( $_POST['fields']))
+{
+$animeListLimit = file_get_contents(
+    "http://ghibliapi.herokuapp.com/films?limit={$_POST['limit']}&fields={$_POST['fields']}");
 var_dump ($animeListLimit );
+}
+
+
 
 include './templates/footer.php';
