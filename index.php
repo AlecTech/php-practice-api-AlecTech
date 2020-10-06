@@ -114,18 +114,21 @@ if ( isset( $_GET['limit'] ) && isset( $_GET['fields']))
 
             if ($_GET['fields'] =='films'): 
             ?>
-            <ol>
-                <?php foreach ( $animeList as $films ) : ?>
-                    <?php
-                        foreach ($films as $url) : ?>
-                        
+                <ol>
+                    <?php foreach ( $animeList as $films ) : ?>
                     <li>
-                        <?php echo $url; ?>
-                        <br/><br/>
-                    </li> 
+                        <ul>
+                            <?php foreach ($films as $url) : ?>
+                                <li><?php 
+                                    if (! is_array($url)) {
+                                        echo $url; 
+                                    }
+                                ?></li>
+                            <?php endforeach;  ?>
+                        </ul>
+                    </li>
                     <?php endforeach;  ?>
-                <?php endforeach;  ?>
-            </ol>
+                </ol>
             <?php endif; ?> 
         <?php
     }
