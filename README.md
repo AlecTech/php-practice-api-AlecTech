@@ -22,7 +22,7 @@ https://stackoverflow.com/questions/35597395/extract-data-from-php-array
     </pre>
 <?php
 
-# Code that didn't work inside 1st if statment, that's why i created separate if statment to handle just Films category
+## Code that didn't work inside 1st if statment, that's why i created separate if statment to handle just Films category
         <?php
             if ($_GET['fields'] =='films'): 
             ?>
@@ -38,3 +38,7 @@ https://stackoverflow.com/questions/35597395/extract-data-from-php-array
                 <?php endforeach;  ?>
             </ol>
             <?php endif; ?>
+
+## Screenshots of calls from Postman
+![Getting Started](postman1.jpg)
+![Getting Started](./img/postman2.jpg)
