@@ -37,10 +37,46 @@ if($dailyAnimeResponse)
 <?php
 if ( isset( $_POST['limit'] ) && isset( $_POST['fields']))
 {
-$animeListLimit = file_get_contents(
-    "http://ghibliapi.herokuapp.com/films?limit={$_POST['limit']}&fields={$_POST['fields']}");
-var_dump ($animeListLimit );
+    $animeListLimit = file_get_contents(
+        "http://ghibliapi.herokuapp.com/films?limit={$_POST['limit']}&fields={$_POST['fields']}");
+    // var_dump ($animeListLimit );
+    if($animeListLimit)
+    {
+        $animeList = json_decode($animeListLimit);
+        ?>
+            <h2> 
+                List Of  
+                <?php echo $_POST['fields']; ?>
+                Data
+            </h2>
+            <pre>
+            <?php
+            print_r($animeList);
+            ?>
+            </pre>
+            <?php
+            if ($_POST['fields'] =='people'): 
+            ?>
+            <ol>
+                <?php foreach ( $animeList as $fields ) : ?>
+                    <?php
+                        foreach ($fields->people as $url) : ?>
+                        
+                    <li>
+                        <?php echo $url; ?>
+                    </li>
+                    <?php endforeach;  ?>
+                <?php endforeach;  ?>
+            </ol>
+            <?php endif; ?>
+
+            
+        <?php
+
+    }
+
 }
+
 
 
 
