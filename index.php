@@ -20,14 +20,14 @@ if($dailyAnimeResponse)
 }
 
 ?>
-<form action="index.php" method="POST">
+<form action="index.php" method="GET">
   <label for="limit">Enter the Amount of Movies to reflect:
   <input type="number" id="amount" name="limit" value="20"></label>
   <label for="fields">Enter the Type of Data needed:
     <select id="film" name="fields">
       <option value="">All</option>
       <option value="people">People</option>
-      <option value="location">Location</option>
+      <option value="locations">Location</option>
       <option value="films">Films</option>
       <option value="vehicles">Vehicles</option>
     </select>
@@ -35,10 +35,10 @@ if($dailyAnimeResponse)
   <input type="submit" value="Show Data!">
 </form>
 <?php
-if ( isset( $_POST['limit'] ) && isset( $_POST['fields']))
+if ( isset( $_GET['limit'] ) && isset( $_GET['fields']))
 {
     $animeListLimit = file_get_contents(
-        "http://ghibliapi.herokuapp.com/films?limit={$_POST['limit']}&fields={$_POST['fields']}");
+        "http://ghibliapi.herokuapp.com/films?limit={$_GET['limit']}&fields={$_GET['fields']}");
     // var_dump ($animeListLimit );
     if($animeListLimit)
     {
@@ -46,16 +46,12 @@ if ( isset( $_POST['limit'] ) && isset( $_POST['fields']))
         ?>
             <h2> 
                 List Of  
-                <?php echo $_POST['fields']; ?>
+                <?php echo $_GET['fields']; ?>
                 Data
             </h2>
-            <pre>
+           
             <?php
-            print_r($animeList);
-            ?>
-            </pre>
-            <?php
-            if ($_POST['fields'] =='people'): 
+            if ($_GET['fields'] =='people'): 
             ?>
             <ol>
                 <?php foreach ( $animeList as $fields ) : ?>
@@ -69,15 +65,73 @@ if ( isset( $_POST['limit'] ) && isset( $_POST['fields']))
                 <?php endforeach;  ?>
             </ol>
             <?php endif; ?>
-
             
+            <?php
+            if ($_GET['fields'] =='locations'): 
+            ?>
+                <ol>
+                    <?php foreach ( $animeList as $fields ) : ?>
+                        <?php
+                            foreach ($fields->locations as $url) : ?>
+                            
+                        <li>
+                            <?php echo $url; ?>
+                        </li>
+                        <?php endforeach;  ?>
+                    <?php endforeach;  ?>
+                </ol>
+            <?php endif; ?>
+
+
+            <?php
+            if ($_GET['fields'] =='vehicles'): 
+            ?>
+            <ol>
+                <?php foreach ( $animeList as $fields ) : ?>
+                    <?php
+                        foreach ($fields->vehicles as $url) : ?>
+                        
+                    <li>
+                        <?php echo $url; ?>
+                    </li>
+                    <?php endforeach;  ?>
+                <?php endforeach;  ?>
+            </ol>
+            <?php endif; ?>
+
         <?php
+
 
     }
 
+    if (isset( $_GET['limit'] ))
+    {
+        $animeListLimit2 = file_get_contents(
+            "http://ghibliapi.herokuapp.com/films?limit={$_GET['limit']}");
+            // var_dump ($animeListLimit2 );
+
+            $animeList = json_decode($animeListLimit2);
+
+            if ($_GET['fields'] =='films'): 
+            ?>
+            <ol>
+                <?php foreach ( $animeList as $films ) : ?>
+                    <?php
+                        foreach ($films as $url) : ?>
+                        
+                    <li>
+                        <?php echo $url; ?>
+                        <br/><br/>
+                    </li> 
+                    <?php endforeach;  ?>
+                <?php endforeach;  ?>
+            </ol>
+            <?php endif; ?> 
+        <?php
+    }
+   
+    
 }
 
 
-
-
-include './templates/footer.php';
+ include './templates/footer.php';
