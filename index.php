@@ -55,13 +55,17 @@ if ( isset( $_GET['limit'] ) && isset( $_GET['fields']))
             ?>
             <ol>
                 <?php foreach ( $animeList as $fields ) : ?>
-                    <?php
-                        foreach ($fields->people as $url) : ?>
-                        
                     <li>
-                        <?php echo $url; ?>
+                        <ul>
+                            <?php
+                                foreach ($fields->people as $url) : ?>
+                                
+                            <li>
+                                <?php echo $url; ?>
+                            </li>
+                            <?php endforeach;  ?>
+                        </ul>
                     </li>
-                    <?php endforeach;  ?>
                 <?php endforeach;  ?>
             </ol>
             <?php endif; ?>
@@ -100,8 +104,6 @@ if ( isset( $_GET['limit'] ) && isset( $_GET['fields']))
             <?php endif; ?>
 
         <?php
-
-
     }
 
     if (isset( $_GET['limit'] ))
@@ -114,16 +116,29 @@ if ( isset( $_GET['limit'] ) && isset( $_GET['fields']))
 
             if ($_GET['fields'] =='films'): 
             ?>
-                <ol>
+              <ol>
                     <?php foreach ( $animeList as $films ) : ?>
                     <li>
                         <ul>
-                            <?php foreach ($films as $url) : ?>
-                                <li><?php 
+                            <?php foreach ($films as $key => $url) : ?>
+                                <li>
+                                    <?php echo $key ?>
+                                    <?php 
                                     if (! is_array($url)) {
                                         echo $url; 
                                     }
-                                ?></li>
+                                    else 
+                                    {
+                                    ?>
+                                        <ul>
+                                            <?php foreach ($url as $value) : ?>
+                                                <li><?php echo $value ?></li>
+                                            <?php endforeach;  ?>
+                                        </ul>
+                                    <?php
+                                    }
+                                    ?>
+                                </li>
                             <?php endforeach;  ?>
                         </ul>
                     </li>
@@ -132,9 +147,6 @@ if ( isset( $_GET['limit'] ) && isset( $_GET['fields']))
             <?php endif; ?> 
         <?php
     }
-   
-    
 }
-
 
  include './templates/footer.php';
